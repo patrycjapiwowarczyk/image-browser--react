@@ -4,6 +4,8 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
 import Modal from './Modal/Modal';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import css from './App.module.css';
 
 class App extends Component {
   state = {
@@ -16,7 +18,7 @@ class App extends Component {
     prevQuery: '',
   };
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { query, page, images } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       this.fetchingImages();
@@ -45,12 +47,12 @@ class App extends Component {
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Fetching images failed');
+        Notify.failure('Fetching images failed, please try again later');
       }
 
       const imageData = await response.json();
-      if (imageData === 0) {
-        throw new Error('No images matching');
+      if (imageData.totalHits === 0) {
+        Notify.failure('Oops, no images matching');
       }
 
       this.setState(prevState => ({
@@ -59,7 +61,7 @@ class App extends Component {
 
       setTimeout(() => {
         this.setState({ isLoading: false });
-      }, 500);
+      }, 600);
     } catch (error) {
       console.log(error.message);
       this.setState({ isLoading: false });
@@ -101,7 +103,7 @@ class App extends Component {
     const { images, isLoading, showModal, selectedImage } = this.state;
 
     return (
-      <div>
+      <div className={css.container}>
         <Searchbar onSubmit={this.handleSearching} />
         <ImageGallery images={images} onImageClick={this.handleImageClick} />
         {isLoading && <Loader />}

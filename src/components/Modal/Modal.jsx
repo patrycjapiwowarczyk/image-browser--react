@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './Modal.module.css';
 
 class Modal extends Component {
   componentDidMount() {
@@ -24,9 +25,12 @@ class Modal extends Component {
 
   render() {
     return (
-      <div onClick={this.handleModalClose}>
-        <div>
-          <img src={this.props.image.largeImageURL} alt="" />
+      <div className={css.modal__container} onClick={this.handleModalClose}>
+        <div className={css.modal}>
+          <img className={css.modal__image}
+            src={this.props.image.largeImageURL}
+            alt={this.props.image.tags}
+          />
         </div>
       </div>
     );

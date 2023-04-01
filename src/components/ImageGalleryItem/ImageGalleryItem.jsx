@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './ImageGalleryItem.module.css';
 
 class ImageGalleryItem extends Component {
   handleClick = () => {
@@ -8,10 +9,11 @@ class ImageGalleryItem extends Component {
 
   render() {
     return (
-      <li>
+      <li className={css.gallery__item}>
         <img
+          className={css.gallery__image}
           src={this.props.image.webformatURL}
-          alt=""
+          alt={this.props.image.tags}
           onClick={this.handleClick}
           loading="lazy"
         />
